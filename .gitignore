@@ -1,0 +1,20 @@
+# --- Python Environment ---
+venv/
+env/
+__pycache__/
+*.pyc
+
+# --- Environment Variables (THE MOST IMPORTANT) ---
+.env
+
+# --- Database (Keep your local data off GitHub) ---
+*.db
+instance/
+
+# --- File Uploads (Ignore actual product images, keep the folder) ---
+static/uploads/*
+!static/uploads/default.jpg
+
+# --- OS Specific Files ---
+.DS_Store
+Thumbs.db

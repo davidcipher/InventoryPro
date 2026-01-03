@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-lg p-4 mt-5">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Welcome Back</h2>
+                <p class="text-muted">Login to manage your business</p>
+            </div>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter admin username" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">Sign In</button>
+            </form>
+            <div class="mt-4 text-center">
+                <small>New business? <a href="/register">Create an account</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

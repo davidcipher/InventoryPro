@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+        .navbar { background-color: #1e293b !important; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">📦 InventoryPro</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item dropdown me-3">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">🌐 Language</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('en')">English</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="changeLanguage('es')">Español</a></li>
+                        </ul>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="/" data-key="nav_dash">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/inventory" data-key="nav_stock">Stock List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/add" data-key="nav_add">Add Product</a></li>
+                    <li class="nav-item"><a href="/logout" class="btn btn-outline-light btn-sm ms-2" data-key="nav_logout">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        const translations = {
+            'en': {
+                'nav_dash': 'Dashboard', 'nav_stock': 'Stock List', 'nav_add': 'Add Product', 'nav_logout': 'Logout',
+                'form_title': 'Add New Product', 'btn_save': 'Save Product', 'lbl_name': 'Product Name',
+                'lbl_cat': 'Category', 'lbl_price': 'Unit Price', 'lbl_qty': 'Quantity', 'lbl_min': 'Minimum Stock Level'
+            },
+            'es': {
+                'nav_dash': 'Tablero', 'nav_stock': 'Lista de Stock', 'nav_add': 'Agregar Producto', 'nav_logout': 'Cerrar Sesión',
+                'form_title': 'Agregar Nuevo Producto', 'btn_save': 'Guardar Producto', 'lbl_name': 'Nombre del Producto',
+                'lbl_cat': 'Categoría', 'lbl_price': 'Precio Unitario', 'lbl_qty': 'Cantidad', 'lbl_min': 'Nivel Mínimo de Stock'
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('icetech_lang', lang);
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) {
+                    // Handle placeholders for inputs
+                    if (el.tagName === 'INPUT') {
+                        el.placeholder = translations[lang][key];
+                    } else {
+                        el.innerText = translations[lang][key];
+                    }
+                }
+            });
+        }
+
+        window.onload = () => {
+            const saved = localStorage.getItem('icetech_lang') || 'en';
+            changeLanguage(saved);
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card border-0 shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-0">📦 Master Inventory</h3>
+            <small class="text-muted">Manage stock for {{ current_user.business_name }}</small>
+        </div>
+        <div class="d-flex gap-2">
+            <input type="text" id="tableSearch" class="form-control" placeholder="Search products...">
+            <a href="/add" class="btn btn-primary text-nowrap">+ Add Product</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle" id="productTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>In Stock</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr>
+                    <td>
+                        <img src="{{ url_for('static', filename='uploads/' + p.image) }}" 
+                             class="rounded shadow-sm" style="width: 45px; height: 45px; object-fit: cover;">
+                    </td>
+                    <td class="fw-bold text-dark">{{ p.name }}</td>
+                    <td><span class="badge bg-light text-dark border">{{ p.category }}</span></td>
+                    <td>{{ current_user.currency }}{{ "{:,.2f}".format(p.price) }}</td>
+                    <td>{{ p.quantity }}</td>
+                    <td>
+                        {% if p.quantity <= p.min_stock %}
+                        <span class="badge bg-danger">Low Stock</span>
+                        {% else %}
+                        <span class="badge bg-success text-white">Available</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Professional Live Search Logic
+    document.getElementById('tableSearch').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#productTable tbody tr');
+        rows.forEach(row => {
+            let name = row.cells[1].innerText.toLowerCase();
+            let category = row.cells[2].innerText.toLowerCase();
+            row.style.display = (name.includes(filter) || category.includes(filter)) ? '' : 'none';
+        });
+    });
+</script>
+{% endblock %}
